@@ -14,5 +14,10 @@ namespace OSM.Models
         public int ID { get; set; }
         [MaxLength(255)]
         public string Naam { get; set; }
+        public int Doelstelling { get; set; }
+        public virtual Competitie Competitie { get; set; }
+        public virtual Manager Manager { get; set; }
+        public virtual List<Speler> Spelers { get; set; }
+        public virtual List<Historie> Type { get; set; }
     }
 }

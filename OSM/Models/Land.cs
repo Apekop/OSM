@@ -14,7 +14,10 @@ namespace OSM.Models
         public int ID { get; set; }
         [MaxLength(50)]
         public string Naam { get; set; }
+        [MaxLength(2)]
+        public string IsoCode { get; set; }
         public Continent Continent { get; set; }
+        public bool Beschikbaar { get; set; }
     }
     
     public enum Continent

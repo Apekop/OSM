@@ -11,6 +11,7 @@ namespace OSM
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            // Onderstaande regel zorgt er voor dat de output als JSON wordt verstuurd ipv XML
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
 
             // Web API routes

@@ -7,14 +7,18 @@ using System.Web;
 
 namespace OSM.Models
 {
-    public class Competitie
+    public class Historie
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        [MaxLength(100)]
-        public string Naam { get; set; }
-        public virtual Land Land { get; set; }
-        public virtual List<Team> Teams { get; set; }
+
+        public DateTime Datum { get; set; }
+
+        public virtual Team Team1 { get; set; }
+        public virtual Team Team2 { get; set; }
+
+        public int Team1Score { get; set; }
+        public int Team2Score { get; set; }
     }
 }

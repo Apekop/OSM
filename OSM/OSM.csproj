@@ -174,10 +174,27 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603220829291_InitialCreate.cs" />
+    <Compile Include="Migrations\201603220829291_InitialCreate.Designer.cs">
+      <DependentUpon>201603220829291_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603221202437_isocodes.cs" />
+    <Compile Include="Migrations\201603221202437_isocodes.Designer.cs">
+      <DependentUpon>201603221202437_isocodes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603231241057_CompletedClasses.cs" />
+    <Compile Include="Migrations\201603231241057_CompletedClasses.Designer.cs">
+      <DependentUpon>201603231241057_CompletedClasses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\Competitie.cs" />
+    <Compile Include="Models\Historie.cs" />
     <Compile Include="Models\Land.cs" />
+    <Compile Include="Models\LandHistorie.cs" />
     <Compile Include="Models\Manager.cs" />
+    <Compile Include="Models\ManagerAchievement.cs" />
+    <Compile Include="Models\ManagerVriend.cs" />
     <Compile Include="Models\Speler.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="OSMContext.cs" />
@@ -190,6 +207,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="GoogleMap.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -235,7 +253,17 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201603220829291_InitialCreate.resx">
+      <DependentUpon>201603220829291_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603221202437_isocodes.resx">
+      <DependentUpon>201603221202437_isocodes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603231241057_CompletedClasses.resx">
+      <DependentUpon>201603231241057_CompletedClasses.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

@@ -14,5 +14,10 @@ namespace OSM.Models
         public int ID { get; set; }
         [MaxLength(255)]
         public string Naam { get; set; }
+
+        // Het virtual keyword wordt in het Entity Framework gebruikt zodat lazy loading kan worden toegepast
+        public virtual List<ManagerAchievement> Achievements { get; set; }
+        public virtual List<ManagerVriend> Vrienden { get; set; }
+        public virtual List<LandHistorie> Geschiedenis { get; set; } 
     }
 }

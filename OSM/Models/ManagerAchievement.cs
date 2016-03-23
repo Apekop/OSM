@@ -7,14 +7,12 @@ using System.Web;
 
 namespace OSM.Models
 {
-    public class Competitie
+    public class ManagerAchievement
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        [MaxLength(100)]
-        public string Naam { get; set; }
-        public virtual Land Land { get; set; }
-        public virtual List<Team> Teams { get; set; }
+        public Achievement Achievement { get; set; }
+        public Manager Manager { get; set; }
     }
 }

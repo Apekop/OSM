@@ -1,3 +1,4 @@
+using System.Data.Entity.ModelConfiguration.Conventions;
 using OSM.Models;
 
 namespace OSM
@@ -27,7 +28,16 @@ namespace OSM
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Competitie> Competities { get; set; }
         public DbSet<Land> Landen { get; set; }
+        public DbSet<Achievement> Achievements { get; set; }
 
-        public System.Data.Entity.DbSet<OSM.Models.Achievement> Achievements { get; set; }
+        // Overschrijf default instellingen door deze methode te overriden
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            // Zoals het default in meervoud zetten van tabelnamen
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
+            // En deze moet natuurlijk blijven staan
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
