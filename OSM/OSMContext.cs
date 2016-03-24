@@ -29,6 +29,9 @@ namespace OSM
         public DbSet<Competitie> Competities { get; set; }
         public DbSet<Land> Landen { get; set; }
         public DbSet<Achievement> Achievements { get; set; }
+        public DbSet<LandHistorie> LandHistories { get; set; }
+        public DbSet<ManagerVriend> Vrienden { get; set; }
+        public DbSet<ManagerAchievement> ManagerAchievements { get; set; }
 
         // Overschrijf default instellingen door deze methode te overriden
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
