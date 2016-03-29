@@ -51,29 +51,44 @@ namespace OSM.Controllers
         }
 
         // GET: api/Worldmap?managerId=5&landId=3
-        [ResponseType(typeof(LandHistorie))]
+        /// <summary>
+        /// Haal de data over de manager in dit land op.
+        /// </summary>
+        /// <param name="managerId"></param>
+        /// <param name="landId"></param>
+        /// <returns>Landnaam, aantal keer competitie/beker/doelstelling bereikt</returns>
+        [ResponseType(typeof(LandHistorieJson))]
         public IHttpActionResult GetLandHistorie(int managerId, int landId)
         {
             LandHistorie landHistorie =
-                db.LandHistories.SingleOrDefault(land => land.Land.ID == landId && land.Manager.ID == managerId);
+                db.LandHistories.Include(l => l.Land).SingleOrDefault(land => land.Land.ID == landId && land.Manager.ID == managerId);
             if (landHistorie == null)
             {
                 Land land = db.Landen.Find(landId);
                 if (land != null)
                 {
-                    return Ok(new LandHistorie
+                    return Ok(new LandHistorieJson
                     {
-                        Land = land,
+                        LandNaam = land.Naam,
                         CompetitieGewonnen = 0,
                         BekerGewonnen = 0,
                         DoelstellingBehaald = 0
                     });
                 }
-                return NotFound();
+                else
+                {
+                    return NotFound();
+                }
             }
             else
             {
-                return Ok(landHistorie);
+                return Ok(new LandHistorieJson
+                {
+                    LandNaam = landHistorie.Land.Naam,
+                    CompetitieGewonnen = landHistorie.CompetitieGewonnen,
+                    BekerGewonnen = landHistorie.BekerGewonnen,
+                    DoelstellingBehaald = landHistorie.DoelstellingBehaald
+                });
             }
 
         }
@@ -169,5 +184,13 @@ namespace OSM.Controllers
         public int ID { get; set; }
         public string Naam { get; set; }
         public int Status { get; set; }
+    }
+
+    public class LandHistorieJson
+    {
+        public string LandNaam { get; set; }
+        public int CompetitieGewonnen { get; set; }
+        public int BekerGewonnen { get; set; }
+        public int DoelstellingBehaald { get; set; }
     }
 }
