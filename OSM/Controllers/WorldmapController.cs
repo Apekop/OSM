@@ -21,30 +21,25 @@ namespace OSM.Controllers
         public IQueryable<LandJson> GetLandHistories(int managerID)
         {
             // TODO: haal alleen de 'speciale' landen op, by default niks.
-            var alleLanden = db.Landen.ToList().Select(land => new LandHistorie { Land = land });
-            var achievementLanden = db.LandHistories.Where(land => land.Manager.ID == managerID);    // PoC voor filter van juiste manager
+            var achievementLanden = db.LandHistories.Include(l => l.Land).Where(land => land.Manager.ID == managerID);    // PoC voor filter van juiste manager
             var result = new List<LandJson>();
 
-            foreach (var land in alleLanden)
+            foreach (var land in achievementLanden)
             {
                 int status = 1;
-                if (land.Land.Beschikbaar)
+                if (land.CompetitieGewonnen > 0)
                 {
-                    if (achievementLanden.Select(x => x.Land.ID).Contains(land.ID))
-                    {
-                        if (achievementLanden.First(x => x.Land.ID == land.ID).CompetitieGewonnen > 0)
-                        {
-                            status = 4;
-                        } else if (achievementLanden.First(x => x.Land.ID == land.ID).BekerGewonnen > 0)
-                        {
-                            status = 3;
-                        } else if (achievementLanden.First(x => x.Land.ID == land.ID).DoelstellingBehaald > 0)
-                        {
-                            status = 2;
-                        }
-                    }
+                    status = 4;
                 }
-                result.Add(new LandJson { ID = land.ID, Naam = land.Land.Naam, Status = status });
+                else if (land.BekerGewonnen > 0)
+                {
+                    status = 3;
+                }
+                else if (land.DoelstellingBehaald > 0)
+                {
+                    status = 2;
+                }
+                result.Add(new LandJson { ID = land.Land.ID, LandIso = land.Land.IsoCode, Naam = land.Land.Naam, Status = status });
             }
             
             return result.AsQueryable();
@@ -70,6 +65,7 @@ namespace OSM.Controllers
                     return Ok(new LandHistorieJson
                     {
                         LandNaam = land.Naam,
+                        LandIso = land.IsoCode,
                         CompetitieGewonnen = 0,
                         BekerGewonnen = 0,
                         DoelstellingBehaald = 0
@@ -85,6 +81,7 @@ namespace OSM.Controllers
                 return Ok(new LandHistorieJson
                 {
                     LandNaam = landHistorie.Land.Naam,
+                    LandIso = landHistorie.Land.IsoCode,
                     CompetitieGewonnen = landHistorie.CompetitieGewonnen,
                     BekerGewonnen = landHistorie.BekerGewonnen,
                     DoelstellingBehaald = landHistorie.DoelstellingBehaald
@@ -172,23 +169,20 @@ namespace OSM.Controllers
         {
             return db.LandHistories.Count(e => e.ID == id) > 0;
         }
-
-        private object ToJsonObject(LandHistorie land)
-        {
-            return new {ID = land.Land.ID, Landnaam = land.Land.Naam, Status = 1};  // Status berekenen
-        }
     }
 
     public class LandJson
     {
         public int ID { get; set; }
         public string Naam { get; set; }
+        public string LandIso { get; set; }
         public int Status { get; set; }
     }
 
     public class LandHistorieJson
     {
         public string LandNaam { get; set; }
+        public string LandIso { get; set; }
         public int CompetitieGewonnen { get; set; }
         public int BekerGewonnen { get; set; }
         public int DoelstellingBehaald { get; set; }

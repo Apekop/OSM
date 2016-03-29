@@ -14,6 +14,8 @@ namespace OSM
             // Onderstaande regel zorgt er voor dat de output als JSON wordt verstuurd ipv XML
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
 
+            config.EnableCors();
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 
