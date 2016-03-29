@@ -17,10 +17,11 @@ namespace OSM.Controllers
     {
         private OSMContext db = new OSMContext();
 
-        // GET: api/Worldmap
+        // GET: api/Worldmap?managerID=5
         public IQueryable<LandJson> GetLandHistories(int managerID)
         {
-            var alleLanden = db.Landen.Select(land => new LandHistorie { Land = land });
+            // TODO: haal alleen de 'speciale' landen op, by default niks.
+            var alleLanden = db.Landen.ToList().Select(land => new LandHistorie { Land = land });
             var achievementLanden = db.LandHistories.Where(land => land.Manager.ID == managerID);    // PoC voor filter van juiste manager
             var result = new List<LandJson>();
 
@@ -49,29 +50,32 @@ namespace OSM.Controllers
             return result.AsQueryable();
         }
 
-        // GET: api/Worldmap/5
-        [ResponseType(typeof(LandJson))]
-        public IHttpActionResult GetLandHistorie(int id)
+        // GET: api/Worldmap?managerId=5&landId=3
+        [ResponseType(typeof(LandHistorie))]
+        public IHttpActionResult GetLandHistorie(int managerId, int landId)
         {
-            LandHistorie landHistorie = db.LandHistories.Find(id);
+            LandHistorie landHistorie =
+                db.LandHistories.SingleOrDefault(land => land.Land.ID == landId && land.Manager.ID == managerId);
             if (landHistorie == null)
             {
+                Land land = db.Landen.Find(landId);
+                if (land != null)
+                {
+                    return Ok(new LandHistorie
+                    {
+                        Land = land,
+                        CompetitieGewonnen = 0,
+                        BekerGewonnen = 0,
+                        DoelstellingBehaald = 0
+                    });
+                }
                 return NotFound();
             }
-
-            int status = 1;
-            if (landHistorie.CompetitieGewonnen > 0)
+            else
             {
-                status = 4;
-            }else if (landHistorie.BekerGewonnen > 0)
-            {
-                status = 3;
-            } else if (landHistorie.DoelstellingBehaald > 0)
-            {
-                status = 2;
+                return Ok(landHistorie);
             }
 
-            return Ok(new LandJson { ID = landHistorie.Land.ID, Naam = landHistorie.Land.Naam, Status = status});
         }
 
         // PUT: api/Worldmap/5
