@@ -20,8 +20,7 @@ namespace OSM.Controllers
         // GET: api/Worldmap?managerID=5
         public IQueryable<LandJson> GetLandHistories(int managerID)
         {
-            // TODO: haal alleen de 'speciale' landen op, by default niks.
-            var achievementLanden = db.LandHistories.Include(l => l.Land).Where(land => land.Manager.ID == managerID);    // PoC voor filter van juiste manager
+            var achievementLanden = db.LandHistories.Include(l => l.Land).Where(land => land.Manager.ID == managerID);
             var result = new List<LandJson>();
 
             foreach (var land in achievementLanden)
@@ -39,7 +38,7 @@ namespace OSM.Controllers
                 {
                     status = 2;
                 }
-                result.Add(new LandJson { ID = land.Land.ID, LandIso = land.Land.IsoCode, Naam = land.Land.Naam, Status = status });
+                result.Add(new LandJson { LandIso = land.Land.IsoCode, Naam = land.Land.Naam, Status = status });
             }
             
             return result.AsQueryable();
@@ -50,16 +49,18 @@ namespace OSM.Controllers
         /// Haal de data over de manager in dit land op.
         /// </summary>
         /// <param name="managerId"></param>
-        /// <param name="landId"></param>
+        /// <param name="landIso"></param>
         /// <returns>Landnaam, aantal keer competitie/beker/doelstelling bereikt</returns>
         [ResponseType(typeof(LandHistorieJson))]
-        public IHttpActionResult GetLandHistorie(int managerId, int landId)
+        public IHttpActionResult GetLandHistorie(int managerId, string landIso)
         {
+            // FirstOrDefault zou SingleOrDefault mogen zijn, maar graag pas na toevoegen unique index op Land en Manager in LandHistorie
             LandHistorie landHistorie =
-                db.LandHistories.Include(l => l.Land).SingleOrDefault(land => land.Land.ID == landId && land.Manager.ID == managerId);
+                db.LandHistories.Include(l => l.Land)
+                .FirstOrDefault(land => land.Land.IsoCode == landIso && land.Manager.ID == managerId);
             if (landHistorie == null)
             {
-                Land land = db.Landen.Find(landId);
+                Land land = db.Landen.SingleOrDefault(l => l.IsoCode == landIso);
                 if (land != null)
                 {
                     return Ok(new LandHistorieJson
@@ -173,7 +174,6 @@ namespace OSM.Controllers
 
     public class LandJson
     {
-        public int ID { get; set; }
         public string Naam { get; set; }
         public string LandIso { get; set; }
         public int Status { get; set; }

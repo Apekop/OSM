@@ -15,6 +15,7 @@ namespace OSM.Models
         [MaxLength(50)]
         public string Naam { get; set; }
         [MaxLength(2)]
+        [Index("Iso_Unique", IsUnique = true)]
         public string IsoCode { get; set; }
         public Continent Continent { get; set; }
         public bool Beschikbaar { get; set; }

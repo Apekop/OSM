@@ -195,6 +195,10 @@
     <Compile Include="Migrations\201603231241057_CompletedClasses.Designer.cs">
       <DependentUpon>201603231241057_CompletedClasses.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603300906162_UniqueIndex.cs" />
+    <Compile Include="Migrations\201603300906162_UniqueIndex.Designer.cs">
+      <DependentUpon>201603300906162_UniqueIndex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\Competitie.cs" />
@@ -271,6 +275,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603231241057_CompletedClasses.resx">
       <DependentUpon>201603231241057_CompletedClasses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603300906162_UniqueIndex.resx">
+      <DependentUpon>201603300906162_UniqueIndex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
