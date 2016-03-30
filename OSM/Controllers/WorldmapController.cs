@@ -44,7 +44,7 @@ namespace OSM.Controllers
             return result.AsQueryable();
         }
 
-        // GET: api/Worldmap?managerId=5&landId=3
+        // GET: api/Worldmap?managerId=5&landIso=NL
         /// <summary>
         /// Haal de data over de manager in dit land op.
         /// </summary>
